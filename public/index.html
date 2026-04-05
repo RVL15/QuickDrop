@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickDrop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0a0a0b;
+      --card: #151517;
+      --border: #2a2a2e;
+      --fg: #e8e8ec;
+      --muted: #6e6e7a;
+      --accent: #e8943a;
+      --accent-dim: rgba(232,148,58,0.12);
+      --success: #34d399;
+      --danger: #f87171;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -120px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(232,148,58,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 460px;
+      padding: 40px 20px 60px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0a0a0b;
+      font-size: 18px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 36px;
+    }
+
+    .qr-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qr-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(232,148,58,0.04), transparent 50%);
+    }
+
+    .qr-card img {
+      width: 200px;
+      height: 200px;
+      border-radius: 12px;
+      background: #fff;
+      padding: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .qr-label {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 32px;
+      transition: all 0.3s;
+    }
+
+    .status.waiting {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .status.connected {
+      background: rgba(52,211,153,0.1);
+      color: var(--success);
+    }
+
+    .status.error {
+      background: rgba(248,113,113,0.1);
+      color: var(--danger);
+    }
+
+    .status .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .files-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .files-header h2 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .files-count {
+      font-size: 12px;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2px 10px;
+      border-radius: 999px;
+    }
+
+    .files-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      animation: slideIn 0.35s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .file-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .file-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-name {
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-size {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .file-download {
+      background: var(--accent);
+      color: #0a0a0b;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+    }
+
+    .file-download:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 16px rgba(232,148,58,0.3);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .empty-state i {
+      font-size: 32px;
+      margin-bottom: 12px;
+      display: block;
+      opacity: 0.4;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-family: 'Space Grotesk', sans-serif;
+      opacity: 0;
+      transition: all 0.35s ease;
+      z-index: 100;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .file-item, .toast, .status .dot { animation: none; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+      <h1>QuickDrop</h1>
+    </div>
+    <p class="subtitle">Scan the QR code from your phone to send files</p>
+
+    <div class="qr-card">
+      <img id="qr" alt="QR Code" />
+      <p class="qr-label">Point your phone camera here</p>
+    </div>
+
+    <div id="status" class="status waiting">
+      <span class="dot"></span>
+      Generating session…
+    </div>
+
+    <div id="filesSection" style="display:none;">
+      <div class="files-header">
+        <h2>Received Files</h2>
+        <span id="filesCount" class="files-count">0</span>
+      </div>
+      <div id="filesList" class="files-list"></div>
+    </div>
+
+    <div id="emptyState" class="empty-state">
+      <i class="fa-regular fa-folder-open"></i>
+      No files received yet
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    let socket;
+    let fileCount = 0;
+
+    function setStatus(text, type) {
+      const el = document.getElementById("status");
+      el.className = "status " + type;
+      el.innerHTML = '<span class="dot"></span>' + text;
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2800);
+    }
+
+    function getFileIcon(name) {
+      const ext = name.split(".").pop().toLowerCase();
+      const map = {
+        pdf: "fa-file-pdf", doc: "fa-file-word", docx: "fa-file-word",
+        xls: "fa-file-excel", xlsx: "fa-file-excel", csv: "fa-file-csv",
+        png: "fa-file-image", jpg: "fa-file-image", jpeg: "fa-file-image",
+        gif: "fa-file-image", webp: "fa-file-image", svg: "fa-file-image",
+        mp4: "fa-file-video", mov: "fa-file-video", avi: "fa-file-video",
+        mp3: "fa-file-audio", wav: "fa-file-audio", zip: "fa-file-zipper",
+        rar: "fa-file-zipper", "7z": "fa-file-zipper",
+        js: "fa-file-code", html: "fa-file-code", css: "fa-file-code",
+        py: "fa-file-code", json: "fa-file-code"
+      };
+      return map[ext] || "fa-file";
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + " B";
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+      return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+    }
+
+    function addFileCard(file) {
+      fileCount++;
+      document.getElementById("filesSection").style.display = "block";
+      document.getElementById("emptyState").style.display = "none";
+      document.getElementById("filesCount").textContent = fileCount;
+
+      const list = document.getElementById("filesList");
+      const card = document.createElement("div");
+      card.className = "file-item";
+      card.innerHTML =
+        '<div class="file-icon"><i class="fa-regular ' + getFileIcon(file.originalName) + '"></i></div>' +
+        '<div class="file-info">' +
+          '<div class="file-name" title="' + file.originalName + '">' + file.originalName + '</div>' +
+          '<div class="file-size">' + formatSize(file.size) + '</div>' +
+        '</div>' +
+        '<a class="file-download" href="/uploads/' + file.filename + '" download="' + file.originalName + '" title="Download">' +
+          '<i class="fa-solid fa-arrow-down"></i>' +
+        '</a>';
+      list.prepend(card);
+      showToast("Received: " + file.originalName);
+    }
+
+    async function init() {
+      try {
+        const res = await fetch(window.location.origin + "/session");
+        if (!res.ok) throw new Error("Server returned " + res.status);
+
+        const data = await res.json();
+        document.getElementById("qr").src = data.qr;
+        setStatus("Waiting for file transfer…", "waiting");
+
+        socket = io(window.location.origin, { transports: ["websocket"] });
+
+        socket.on("connect", function () {
+          setStatus("Connected — ready to receive", "connected");
+          socket.emit("join-session", data.sessionId);
+        });
+
+        socket.on("disconnect", function () {
+          setStatus("Disconnected — check your connection", "error");
+        });
+
+        socket.on("connect_error", function () {
+          setStatus("Connection failed — retrying…", "error");
+        });
+
+        // Listen for uploaded files pushed from the server
+        socket.on("file-received", function (file) {
+          addFileCard(file);
+        });
+
+      } catch (err) {
+        setStatus("Failed to start session", "error");
+        console.error("Init error:", err);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
