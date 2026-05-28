@@ -1,17 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Contact - QuickDrop</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact — QuickDrop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{--bg:#0a0a0b;--card:#0f1112;--fg:#e8e8ec;--muted:#9aa0a6;--accent:#e8943a}
+    body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--fg);margin:0;min-height:100vh}
+    .container{max-width:680px;margin:48px auto;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:12px}
+    .header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+    .logo-icon{width:44px;height:44px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#0a0a0b;font-weight:700}
+    h1{margin:0;font-size:22px}
+    p{color:var(--muted);line-height:1.6}
+    .contact-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
+    .card{background:var(--card);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--fg)}
+    .btn{background:var(--accent);color:#0a0a0b;padding:10px 14px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
+    footer{margin-top:40px;text-align:center;padding:20px;color:var(--muted)}
+  </style>
 </head>
 <body>
-  <h1>Contact</h1>
+  <div class="container">
+    <div class="header">
+      <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+      <div>
+        <h1>Contact QuickDrop</h1>
+        <div style="color:var(--muted);font-size:13px">Support, feedback, and business inquiries</div>
+      </div>
+    </div>
 
-  <p>
-    For support or business inquiries:
-  </p>
+    <p>If you need assistance or would like to report an issue, please use the contact options below. For urgent matters, include "URGENT" in your message subject.</p>
 
-  <p>
-    Email: your@email.com
-  </p>
+    <div class="contact-grid">
+      <div class="card">
+        <strong>Support email</strong>
+        <p style="margin:8px 0;"><a href="mailto:rishahvlokhande1@email.com">rishahvlokhande1@email.com</a></p>
+        <strong>Phone</strong>
+        <p style="margin:8px 0;">+91 81048 19297</p>
+        <strong>Response time</strong>
+        <p style="margin:8px 0;">We aim to respond to support requests within 48 business hours.</p>
+      </div>
+
+      <div class="card">
+        <strong>Send a message</strong>
+        <form action="mailto:rishahvlokhande1@email.com" method="post" enctype="text/plain">
+          <label for="name">Your name</label>
+          <input id="name" name="name" placeholder="Full name">
+
+          <label for="email">Your email</label>
+          <input id="email" name="email" placeholder="you@example.com">
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" placeholder="Describe the issue or inquiry"></textarea>
+
+          <div style="margin-top:10px;text-align:right">
+            <button type="submit" class="btn">Send message</button>
+          </div>
+        </form>
+        <p style="margin-top:10px;color:var(--muted);font-size:13px">Note: This form opens your email client. For automatic handling, integrate a server-side contact endpoint or third-party form provider.</p>
+      </div>
+    </div>
+
+    <footer>
+      <a href="/about.html">About</a> |
+      <a href="/privacy.html">Privacy</a> |
+      <a href="/contact.html">Contact</a>
+    </footer>
+  </div>
 </body>
 </html>
