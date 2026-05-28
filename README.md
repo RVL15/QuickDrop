@@ -1,3 +1,16 @@
+
+cd c:\Users\Admin\Desktop\PROJECTS\qr\quickdrop
+npm install
+npm start
+
+In another terminal:
+cd c:\Users\Admin\Desktop\PROJECTS\qr\quickdrop
+ngrok http 3000
+
+https://knarred-serviceable-arlo.ngrok-free.dev
+
+
+
 # QuickDrop
 
 QuickDrop is a QR-based file transfer app that lets you send files from a phone to a laptop. The laptop shows a QR code, the phone opens the upload page, and uploaded files appear on the receiver page in real time.
@@ -83,6 +96,16 @@ https://knarred-serviceable-arlo.ngrok-free.dev
 ```
 
 ## How To Use
+
+cd c:\Users\Admin\Desktop\PROJECTS\qr\quickdrop
+npm install
+npm start
+
+In another terminal:
+cd c:\Users\Admin\Desktop\PROJECTS\qr\quickdrop
+ngrok http 3000
+
+https://knarred-serviceable-arlo.ngrok-free.dev
 
 1. Open the receiver page in your browser:
 
