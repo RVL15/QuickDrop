@@ -13,141 +13,147 @@ https://knarred-serviceable-arlo.ngrok-free.dev
 
 # QuickDrop
 
-QuickDrop is a QR-based file transfer app that lets you send files from a phone to a laptop. The laptop shows a QR code, the phone opens the upload page, and uploaded files appear on the receiver page in real time.
+QuickDrop is a real-time QR-based file transfer web app that allows users to send files from a phone to a laptop instantly through a browser.
 
-## What It Does
+The receiver opens the QuickDrop website on a laptop, scans a generated QR code using a phone, uploads a file, and the file appears instantly on the receiver page using Socket.IO real-time communication.
 
-- Creates a new sharing session and QR code when the receiver page loads
-- Opens a mobile upload page when the QR code is scanned
-- Uploads one file at a time using `multipart/form-data`
-- Notifies the receiver in real time with Socket.IO
-- Saves uploaded files in the local `uploads/` folder
+---
 
-## Project Files
+## Live Demo
 
-- `server.js` - Express and Socket.IO server
-- `public/index.html` - Receiver page for the laptop
-- `public/upload.html` - Sender page for the phone
-- `uploads/` - Folder where received files are stored
+🌐 Live Website:
 
-## Technologies Used
+https://quickdrop-chtz.onrender.com/
 
-| Technology | What it does | Why QuickDrop uses it |
-| --- | --- | --- |
-| Node.js | Runs JavaScript on the server | Powers the backend app and handles requests |
-| Express | Web framework for Node.js | Serves pages and builds the API endpoints |
-| Socket.IO | Real-time browser-to-server communication | Updates the receiver page instantly when a file arrives |
-| Multer | File upload middleware for Express | Receives uploaded files and saves them to disk |
-| qrcode | QR code generation library | Creates the QR code shown on the laptop page |
-| uuid | Unique ID generator | Creates a new session ID for each transfer |
-| ngrok | Public tunnel for local apps | Makes the local app reachable from a phone on another network |
-| HTML / CSS / JavaScript | Front-end web technologies | Build the sender and receiver user interfaces |
 
-## How It Works
+---
 
-```mermaid
-flowchart LR
-  A[Laptop opens QuickDrop] --> B[Server generates session ID]
-  B --> C[Server creates QR code]
-  C --> D[Receiver page displays QR code]
-  D --> E[Phone scans QR code]
-  E --> F[Phone opens /upload/:id]
-  F --> G[User selects file]
-  G --> H[Browser sends file to POST /upload/:id]
-  H --> I[Server saves file in uploads/]
-  I --> J[Socket.IO notifies receiver page]
-  J --> K[File appears on laptop screen]
+# Features
+
+* QR-based device connection
+* Real-time file transfer
+* Phone-to-laptop uploads
+* Instant receiver updates using Socket.IO
+* Simple and clean interface
+* Unique transfer sessions
+* Browser-based (no app installation required)
+* Public internet access using Render deployment
+
+---
+
+# Technologies Used
+
+| Technology          | Purpose                 |
+| ------------------- | ----------------------- |
+| Node.js             | Backend runtime         |
+| Express.js          | Web server and routing  |
+| Socket.IO           | Real-time communication |
+| Multer              | File uploads            |
+| QRCode              | QR generation           |
+| UUID                | Session ID generation   |
+| HTML/CSS/JavaScript | Frontend UI             |
+| Render              | Cloud hosting platform  |
+
+---
+
+# Project Structure
+
+```bash
+quickdrop/
+│
+├── public/
+│   ├── index.html
+│   └── upload.html
+│
+├── uploads/
+│
+├── server.js
+├── package.json
+└── README.md
 ```
 
-## Requirements
+---
 
-- Node.js
-- npm
-- ngrok for phone access outside your local network
+# How QuickDrop Works
 
-## How To Run
+1. User opens the receiver page on a laptop.
+2. QuickDrop generates a unique session and QR code.
+3. User scans the QR code using a phone.
+4. Phone opens the upload page.
+5. User selects and uploads a file.
+6. Receiver page instantly receives the file update through Socket.IO.
 
-Important: run these commands from the `quickdrop/` folder, not from the parent `qr/` folder.
+---
 
-### 1. Install dependencies
+# Installation
+
+Clone the repository:
+
+```bash
+git clone YOUR_GITHUB_REPO_LINK
+```
+
+Move into the project folder:
+
+```bash
+cd quickdrop
+```
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### 2. Start the server
+Start the server:
 
 ```bash
 npm start
 ```
 
-The app runs on port `3000`.
-
-### 3. Start ngrok in a second terminal
+Open:
 
 ```bash
-ngrok http 3000
+http://localhost:3000
 ```
 
-Current working public URL:
+---
 
-```text
-https://knarred-serviceable-arlo.ngrok-free.dev
-```
+# Deployment
 
-## How To Use
+QuickDrop is deployed using Render.
 
-cd c:\Users\Admin\Desktop\PROJECTS\qr\quickdrop
-npm install
-npm start
+## Render Configuration
 
-In another terminal:
-cd c:\Users\Admin\Desktop\PROJECTS\qr\quickdrop
-ngrok http 3000
+| Setting       | Value       |
+| ------------- | ----------- |
+| Runtime       | Node        |
+| Build Command | npm install |
+| Start Command | npm start   |
 
-https://knarred-serviceable-arlo.ngrok-free.dev
+---
 
-1. Open the receiver page in your browser:
+# Important Notes
 
-```text
-https://knarred-serviceable-arlo.ngrok-free.dev
-```
+* Uploaded files are stored temporarily in the uploads/ folder.
+* Render free hosting may remove uploaded files after redeployment or restart.
+* The app currently supports one file upload at a time.
+* ngrok is no longer required after deployment.
 
-2. Scan the QR code with your phone.
-3. The phone opens the upload page.
-4. Choose a file and tap **Send File**.
-5. The file appears on the laptop receiver page.
+---
 
-## Important Notes
+# API Endpoints
 
-- Use the ngrok URL when opening QuickDrop from your phone.
-- `localhost` only works on the same computer.
-- If ngrok restarts, the public URL may change.
-- The app currently uploads one file at a time.
+| Endpoint         | Description            |
+| ---------------- | ---------------------- |
+| GET /            | Receiver page          |
+| GET /session     | Creates session and QR |
+| GET /upload/:id  | Sender upload page     |
+| POST /upload/:id | Upload file            |
 
-## API Endpoints
+---
 
-- `GET /` - Receiver page
-- `GET /session` - Returns the session ID, QR image, and upload URL
-- `GET /upload/:id` - Phone upload page
-- `POST /upload/:id` - Uploads a file
-
-## Troubleshooting
-
-If the phone page does not open:
-
-1. Make sure `npm start` is running in the `quickdrop/` folder.
-2. Make sure `ngrok http 3000` is running.
-3. Open the receiver page from the ngrok URL, not `localhost`.
-4. Scan a fresh QR code after restarting the server or ngrok.
-
-If uploads fail:
-
-1. Check the browser console on the phone.
-2. Check the server terminal for errors.
-3. Confirm the file is within the size limit.
-
-## Dependencies
+# Dependencies
 
 ```json
 {
@@ -159,6 +165,27 @@ If uploads fail:
 }
 ```
 
-## License
+---
+
+# Future Improvements
+
+* Multiple file uploads
+* Drag and drop support
+* Progress bars
+* End-to-end encryption
+* Download history
+* File expiration system
+* Cloud storage integration
+* Mobile app version
+
+---
+
+# License
 
 ISC
+
+---
+
+# Author
+
+Rishabh Lokhande
