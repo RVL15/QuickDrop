@@ -1,39 +1,60 @@
-cd c:\Users\Admin\Desktop\PROJECTS\qr\quickdrop
-npm install
-npm start
-
-In another terminal:
-cd c:\Users\Admin\Desktop\PROJECTS\qr\quickdrop
-ngrok http 3000
-
-https://knarred-serviceable-arlo.ngrok-free.dev
-
-
-
-
-
 # QuickDrop
 
-QuickDrop is a QR-based file transfer app for sending files from a phone to a laptop over the local network or a public ngrok tunnel. The laptop shows a QR code, the phone opens the upload page, and uploaded files are immediately listed on the receiver screen.
+QuickDrop is a QR-based file transfer app that lets you send files from a phone to a laptop. The laptop shows a QR code, the phone opens the upload page, and uploaded files appear on the receiver page in real time.
 
 ## What It Does
 
-- Generates a unique session and QR code for each receiver page load
-- Opens a mobile upload page when the QR is scanned
-- Uploads one file at a time through `multipart/form-data`
+- Creates a new sharing session and QR code when the receiver page loads
+- Opens a mobile upload page when the QR code is scanned
+- Uploads one file at a time using `multipart/form-data`
 - Notifies the receiver in real time with Socket.IO
-- Stores uploaded files in the local `uploads/` folder
+- Saves uploaded files in the local `uploads/` folder
 
 ## Project Files
 
-- `server.js` - Express + Socket.IO server
-- `public/index.html` - Receiver page shown on the laptop
-- `public/upload.html` - Sender page shown on the phone
-- `uploads/` - Saved files
+- `server.js` - Express and Socket.IO server
+- `public/index.html` - Receiver page for the laptop
+- `public/upload.html` - Sender page for the phone
+- `uploads/` - Folder where received files are stored
 
-## How to Run
+## Technologies Used
 
-> Important: run all commands from the `quickdrop/` folder, not from the parent `qr/` folder.
+| Technology | What it does | Why QuickDrop uses it |
+| --- | --- | --- |
+| Node.js | Runs JavaScript on the server | Powers the backend app and handles requests |
+| Express | Web framework for Node.js | Serves pages and builds the API endpoints |
+| Socket.IO | Real-time browser-to-server communication | Updates the receiver page instantly when a file arrives |
+| Multer | File upload middleware for Express | Receives uploaded files and saves them to disk |
+| qrcode | QR code generation library | Creates the QR code shown on the laptop page |
+| uuid | Unique ID generator | Creates a new session ID for each transfer |
+| ngrok | Public tunnel for local apps | Makes the local app reachable from a phone on another network |
+| HTML / CSS / JavaScript | Front-end web technologies | Build the sender and receiver user interfaces |
+
+## How It Works
+
+```mermaid
+flowchart LR
+  A[Laptop opens QuickDrop] --> B[Server generates session ID]
+  B --> C[Server creates QR code]
+  C --> D[Receiver page displays QR code]
+  D --> E[Phone scans QR code]
+  E --> F[Phone opens /upload/:id]
+  F --> G[User selects file]
+  G --> H[Browser sends file to POST /upload/:id]
+  H --> I[Server saves file in uploads/]
+  I --> J[Socket.IO notifies receiver page]
+  J --> K[File appears on laptop screen]
+```
+
+## Requirements
+
+- Node.js
+- npm
+- ngrok for phone access outside your local network
+
+## How To Run
+
+Important: run these commands from the `quickdrop/` folder, not from the parent `qr/` folder.
 
 ### 1. Install dependencies
 
@@ -41,21 +62,21 @@ QuickDrop is a QR-based file transfer app for sending files from a phone to a la
 npm install
 ```
 
-### 2. Start the app
+### 2. Start the server
 
 ```bash
 npm start
 ```
 
-The server runs on port `3000`.
+The app runs on port `3000`.
 
-### 3. Start ngrok in another terminal
+### 3. Start ngrok in a second terminal
 
 ```bash
 ngrok http 3000
 ```
 
-For this workspace, the working public URL is:
+Current working public URL:
 
 ```text
 https://knarred-serviceable-arlo.ngrok-free.dev
@@ -72,19 +93,19 @@ https://knarred-serviceable-arlo.ngrok-free.dev
 2. Scan the QR code with your phone.
 3. The phone opens the upload page.
 4. Choose a file and tap **Send File**.
-5. The file appears instantly on the receiver page.
+5. The file appears on the laptop receiver page.
 
 ## Important Notes
 
-- Use the ngrok URL when sending from a phone. The `localhost` address only works on the same machine.
-- If ngrok restarts, the public URL can change.
-- If the QR points to a local address, the phone cannot reach it.
-- The current app sends one file at a time.
+- Use the ngrok URL when opening QuickDrop from your phone.
+- `localhost` only works on the same computer.
+- If ngrok restarts, the public URL may change.
+- The app currently uploads one file at a time.
 
 ## API Endpoints
 
 - `GET /` - Receiver page
-- `GET /session` - Returns session ID, QR image, and phone upload URL
+- `GET /session` - Returns the session ID, QR image, and upload URL
 - `GET /upload/:id` - Phone upload page
 - `POST /upload/:id` - Uploads a file
 
@@ -92,10 +113,10 @@ https://knarred-serviceable-arlo.ngrok-free.dev
 
 If the phone page does not open:
 
-1. Make sure `npm start` is running.
-2. Make sure ngrok is running on port `3000`.
+1. Make sure `npm start` is running in the `quickdrop/` folder.
+2. Make sure `ngrok http 3000` is running.
 3. Open the receiver page from the ngrok URL, not `localhost`.
-4. Scan a fresh QR code after each restart.
+4. Scan a fresh QR code after restarting the server or ngrok.
 
 If uploads fail:
 
