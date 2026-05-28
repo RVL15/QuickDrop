@@ -21,6 +21,42 @@ const io = new Server(server, {
 const PORT = 3000;
 const UPLOAD_DIR = path.join(__dirname, "uploads");
 
+async function detectNgrokBaseUrl() {
+  try {
+    const response = await fetch("http://127.0.0.1:4040/api/tunnels");
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = await response.json();
+    const tunnels = Array.isArray(data.tunnels) ? data.tunnels : [];
+    const secureTunnel = tunnels.find((tunnel) => tunnel.public_url && tunnel.public_url.startsWith("https://"));
+    const tunnel = secureTunnel || tunnels.find((item) => item.public_url);
+
+    return tunnel ? tunnel.public_url.replace(/\/$/, "") : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+function getBaseUrl(req) {
+  const configuredBaseUrl = process.env.PUBLIC_BASE_URL || process.env.BASE_URL;
+
+  if (configuredBaseUrl) {
+    return configuredBaseUrl.replace(/\/$/, "");
+  }
+
+  const forwardedHost = req.get("x-forwarded-host");
+  const forwardedProto = req.get("x-forwarded-proto");
+
+  if (forwardedHost) {
+    return `${forwardedProto || req.protocol}://${forwardedHost}`;
+  }
+
+  return `${req.protocol}://${req.get("host")}`;
+}
+
 /* ========== Ensure uploads directory exists ========== */
 if (!fs.existsSync(UPLOAD_DIR)) {
   fs.mkdirSync(UPLOAD_DIR, { recursive: true });
@@ -80,7 +116,8 @@ app.get("/", (req, res) => {
 app.get("/session", async (req, res) => {
   try {
     const sessionId = uuidv4();
-    const url = `${req.protocol}://${req.get("host")}/upload/${sessionId}`;
+    const baseUrl = (await detectNgrokBaseUrl()) || getBaseUrl(req);
+    const url = `${baseUrl}/upload/${sessionId}`;
     const qrCode = await QRCode.toDataURL(url);
 
     res.json({ sessionId, qr: qrCode, url });

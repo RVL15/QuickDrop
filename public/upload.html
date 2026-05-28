@@ -170,12 +170,18 @@
       font-weight: 700;
       cursor: pointer;
       transition: opacity 0.15s, transform 0.15s;
-      display: none;
+      display: block;
+      opacity: 0.5;
+      pointer-events: none;
     }
 
-    .btn-upload.visible { display: block; }
-    .btn-upload:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .btn-upload:not(:disabled):hover { opacity: 0.9; transform: scale(1.01); }
+    .btn-upload.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .btn-upload:disabled { cursor: not-allowed; transform: none; }
+    .btn-upload:not(:disabled):hover { opacity: 0.92; transform: scale(1.01); }
 
     .progress-wrap {
       display: none;
@@ -272,7 +278,7 @@
       <button class="remove" id="removeBtn" aria-label="Remove selected file"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
-    <button class="btn-upload" id="uploadBtn">Send File</button>
+    <button class="btn-upload" id="uploadBtn" disabled>Send File</button>
 
     <div class="progress-wrap" id="progressWrap">
       <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
@@ -324,6 +330,7 @@
       fileSize.textContent = formatSize(file.size);
       selectedFile.classList.add("visible");
       uploadBtn.classList.add("visible");
+      uploadBtn.disabled = false;
       hideResult();
     }
 
@@ -332,6 +339,7 @@
       fileInput.value = "";
       selectedFile.classList.remove("visible");
       uploadBtn.classList.remove("visible");
+      uploadBtn.disabled = true;
       progressWrap.classList.remove("visible");
       progressFill.style.width = "0%";
       hideResult();

@@ -121,6 +121,33 @@
       z-index: 1;
     }
 
+    .session-url {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      font-size: 12px;
+      color: var(--muted);
+      word-break: break-all;
+      position: relative;
+      z-index: 1;
+    }
+
+    .session-warning {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(248,113,113,0.22);
+      background: rgba(248,113,113,0.08);
+      color: #fca5a5;
+      font-size: 12px;
+      line-height: 1.5;
+      display: none;
+      position: relative;
+      z-index: 1;
+    }
+
     .status {
       display: inline-flex;
       align-items: center;
@@ -313,6 +340,8 @@
     <div class="qr-card">
       <img id="qr" alt="QR Code" />
       <p class="qr-label">Point your phone camera here</p>
+      <div id="sessionUrl" class="session-url" style="display:none;"></div>
+      <div id="sessionWarning" class="session-warning"></div>
     </div>
 
     <div id="status" class="status waiting">
@@ -405,7 +434,21 @@
 
         const data = await res.json();
         document.getElementById("qr").src = data.qr;
-        setStatus("Waiting for file transfer…", "waiting");
+        const sessionUrl = document.getElementById("sessionUrl");
+        sessionUrl.textContent = "Phone link: " + data.url;
+        sessionUrl.style.display = "block";
+
+        const sessionWarning = document.getElementById("sessionWarning");
+        const isLocalUrl = /localhost|127\.0\.0\.1|0\.0\.0\.0/.test(data.url);
+
+        if (isLocalUrl) {
+          sessionWarning.textContent =
+            "This QR points to a local address, so a phone outside this machine cannot open it. Start ngrok first, then open QuickDrop from the ngrok URL or set PUBLIC_BASE_URL to your tunnel URL.";
+          sessionWarning.style.display = "block";
+          setStatus("Local link detected — phone cannot reach this QR", "error");
+        } else {
+          setStatus("Waiting for file transfer…", "waiting");
+        }
 
         socket = io(window.location.origin, { transports: ["websocket"] });
 
