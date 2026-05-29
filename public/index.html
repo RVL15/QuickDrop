@@ -29,6 +29,8 @@
 
     body {
       font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
       background: var(--bg);
       color: var(--fg);
       min-height: 100vh;
@@ -77,15 +79,22 @@
     }
 
     .logo h1 {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
       letter-spacing: -0.5px;
     }
 
-    .subtitle {
+    .platform-label {
       color: var(--muted);
       font-size: 14px;
-      margin-bottom: 36px;
+      margin: 2px 0 4px 46px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+      margin-bottom: 32px;
     }
 
     .qr-card {
@@ -120,7 +129,7 @@
 
     .qr-label {
       margin-top: 16px;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--muted);
       position: relative;
       z-index: 1;
@@ -132,7 +141,7 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.02);
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
       word-break: break-all;
       position: relative;
@@ -146,7 +155,7 @@
       border: 1px solid rgba(248,113,113,0.22);
       background: rgba(248,113,113,0.08);
       color: #fca5a5;
-      font-size: 12px;
+      font-size: 13px;
       line-height: 1.5;
       display: none;
       position: relative;
@@ -159,7 +168,7 @@
       gap: 8px;
       padding: 8px 16px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       margin-bottom: 32px;
       transition: all 0.3s;
@@ -201,12 +210,12 @@
     }
 
     .files-header h2 {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 600;
     }
 
     .files-count {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
       background: var(--card);
       border: 1px solid var(--border);
@@ -255,7 +264,7 @@
     }
 
     .file-name {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -263,7 +272,7 @@
     }
 
     .file-size {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
       margin-top: 2px;
     }
@@ -294,7 +303,7 @@
       text-align: center;
       padding: 40px 20px;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15px;
     }
 
     .empty-state i {
@@ -313,14 +322,14 @@
     }
 
     .laptop-send h2 {
-      font-size: 16px;
+      font-size: 18px;
       margin-bottom: 8px;
     }
 
     .laptop-send p {
-      font-size: 13px;
+      font-size: 15px;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.65;
     }
 
     .laptop-upload-row {
@@ -358,7 +367,7 @@
 
     .laptop-selected {
       margin-top: 10px;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--muted);
       word-break: break-all;
     }
@@ -399,23 +408,24 @@
       <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
       <h1>QuickDrop</h1>
     </div>
-    <p class="subtitle">Scan the QR code from your phone to send files</p>
+    <p class="platform-label">Desktop transfer interface</p>
+    <p class="subtitle">Scan the QR code with your phone to start a transfer.</p>
 
     <div class="qr-card">
       <img id="qr" alt="QR Code" />
-      <p class="qr-label">Point your phone camera here</p>
+      <p class="qr-label">Use your phone camera to open this session.</p>
       <div id="sessionUrl" class="session-url" style="display:none;"></div>
       <div id="sessionWarning" class="session-warning"></div>
     </div>
 
     <div id="status" class="status waiting">
       <span class="dot"></span>
-      Generating session…
+      Creating session…
     </div>
 
     <div id="filesSection" style="display:none;">
       <div class="files-header">
-        <h2>Received Files</h2>
+        <h2>Received files</h2>
         <span id="filesCount" class="files-count">0</span>
       </div>
       <div id="filesList" class="files-list"></div>
@@ -423,17 +433,17 @@
 
     <div id="emptyState" class="empty-state">
       <i class="fa-regular fa-folder-open"></i>
-      No files received yet
+      No files have been received yet.
     </div>
 
     <div class="laptop-send">
       <h2>Send from this laptop</h2>
-      <p>Select a file here and upload it to the active session. The phone will receive it instantly.</p>
+      <p>Select a file on this laptop and send it to the active session. It will appear on the phone instantly.</p>
       <div class="laptop-upload-row">
         <input id="laptopFileInput" class="laptop-file-input" type="file" aria-label="Choose a file to send from laptop">
         <button id="laptopSendBtn" class="laptop-upload-btn" type="button" disabled>Send to phone</button>
       </div>
-      <div id="laptopSelected" class="laptop-selected">No file selected.</div>
+      <div id="laptopSelected" class="laptop-selected">No file selected</div>
     </div>
   </div>
 
@@ -573,7 +583,7 @@
         sessionId = data.sessionId;
         document.getElementById("qr").src = data.qr;
         const sessionUrl = document.getElementById("sessionUrl");
-        sessionUrl.textContent = "Phone link: " + data.url;
+        sessionUrl.textContent = "Session link: " + data.url;
         sessionUrl.style.display = "block";
 
         const sessionWarning = document.getElementById("sessionWarning");
@@ -581,11 +591,11 @@
 
         if (isLocalUrl) {
           sessionWarning.textContent =
-            "This QR points to a local address, so a phone outside this machine cannot open it. Start ngrok first, then open QuickDrop from the ngrok URL or set PUBLIC_BASE_URL to your tunnel URL.";
+            "This QR points to a local address, so a phone outside this machine cannot open it. Start ngrok first, or set PUBLIC_BASE_URL to your tunnel URL.";
           sessionWarning.style.display = "block";
           setStatus("Local link detected — phone cannot reach this QR", "error");
         } else {
-          setStatus("Waiting for file transfer…", "waiting");
+          setStatus("Waiting for a transfer…", "waiting");
         }
 
         socket = io(window.location.origin, { transports: ["websocket"] });

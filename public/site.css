@@ -24,6 +24,9 @@ html {
 
 body {
   margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
   color: var(--fg);
   background:
     radial-gradient(circle at top left, rgba(232, 148, 58, 0.12), transparent 28%),
@@ -85,12 +88,12 @@ a:hover {
 }
 
 .site-brand-title strong {
-  font-size: 18px;
+  font-size: 20px;
   letter-spacing: -0.02em;
 }
 
 .site-brand-title span {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
 }
 
@@ -101,12 +104,12 @@ a:hover {
 }
 
 .site-nav a {
-  padding: 10px 14px;
+  padding: 11px 15px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.02);
   color: var(--fg);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .site-nav a:hover {
@@ -123,13 +126,13 @@ a:hover {
 }
 
 .page-card-inner {
-  padding: 28px;
+  padding: 30px;
 }
 
 .page-hero {
   display: grid;
-  gap: 10px;
-  margin-bottom: 28px;
+  gap: 12px;
+  margin-bottom: 30px;
 }
 
 .page-kicker {
@@ -141,21 +144,21 @@ a:hover {
   border-radius: 999px;
   background: var(--accent-dim);
   color: var(--accent);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
 }
 
 .page-title {
   margin: 0;
-  font-size: clamp(30px, 3vw, 46px);
-  line-height: 1.04;
+  font-size: clamp(32px, 3vw, 50px);
+  line-height: 1.08;
   letter-spacing: -0.04em;
 }
 
 .page-subtitle {
   margin: 0;
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: 17px;
+  line-height: 1.75;
   color: var(--muted);
   max-width: 760px;
 }
@@ -173,12 +176,12 @@ a:hover {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 18px;
-  padding: 20px;
+  padding: 22px;
 }
 
 .section-card h2 {
   margin: 0 0 12px;
-  font-size: 18px;
+  font-size: 19px;
   letter-spacing: -0.02em;
 }
 
@@ -186,7 +189,8 @@ a:hover {
 .section-card li {
   margin: 0;
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.75;
+  font-size: 16px;
 }
 
 .section-card ul {
@@ -209,7 +213,7 @@ a:hover {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: var(--fg);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .callout {
@@ -231,7 +235,7 @@ a:hover {
 }
 
 .field label {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
 }
 
@@ -266,7 +270,7 @@ a:hover {
   justify-content: center;
   gap: 8px;
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: 12px 18px;
   font-weight: 700;
   border: 1px solid transparent;
   cursor: pointer;
@@ -295,7 +299,7 @@ a:hover {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   text-align: center;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .site-footer a {
@@ -324,6 +328,16 @@ a:hover {
 
   .page-card-inner {
     padding: 20px;
+  }
+
+  .page-title {
+    font-size: clamp(30px, 9vw, 42px);
+  }
+
+  .page-subtitle,
+  .section-card p,
+  .section-card li {
+    font-size: 15px;
   }
 
   .content-grid.two-col {

@@ -27,6 +27,7 @@
 
     body {
       font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
       background: var(--bg);
       color: var(--fg);
       min-height: 100vh;
@@ -58,6 +59,7 @@
       color: var(--muted);
       font: inherit;
       font-weight: 700;
+      font-size: 15px;
       padding: 12px 10px;
       border-radius: 10px;
       cursor: pointer;
@@ -97,8 +99,15 @@
     }
 
     .logo span {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
+    }
+
+    .platform-label {
+      margin: -22px 0 24px 40px;
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 0.01em;
     }
 
     .drop-zone {
@@ -134,7 +143,7 @@
     }
 
     .drop-zone p {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--muted);
       line-height: 1.5;
     }
@@ -176,7 +185,7 @@
     }
 
     .selected-file .name {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -184,7 +193,7 @@
     }
 
     .selected-file .size {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
     }
 
@@ -205,7 +214,7 @@
       background: var(--accent);
       color: #0a0a0b;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
       transition: opacity 0.15s, transform 0.15s;
@@ -246,7 +255,7 @@
     }
 
     .progress-label {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
       margin-top: 6px;
       text-align: center;
@@ -258,7 +267,7 @@
       padding: 20px;
       border-radius: 12px;
       margin-top: 16px;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
     }
 
@@ -284,7 +293,7 @@
 
     .hint {
       text-align: center;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
       margin-top: 20px;
     }
@@ -296,8 +305,8 @@
       background: rgba(232,148,58,0.08);
       border: 1px solid rgba(232,148,58,0.18);
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 14px;
+      line-height: 1.65;
     }
 
     .files-list {
@@ -335,7 +344,7 @@
     }
 
     .file-item .name {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -343,7 +352,7 @@
     }
 
     .file-item .size {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
       margin-top: 2px;
     }
@@ -373,21 +382,19 @@
       <span>QuickDrop</span>
     </div>
 
+    <p class="platform-label">Mobile transfer interface</p>
+
     <div class="tabs" role="tablist" aria-label="Transfer modes">
       <button class="tab-btn active" id="sendTabBtn" type="button">Send</button>
       <button class="tab-btn" id="receiveTabBtn" type="button">Receive</button>
-    </div>
-
-    <div class="session-note">
-      This page can send files from your phone and show files shared in the current session.
     </div>
 
     <div class="panel active" id="sendPanel">
       <div class="drop-zone" id="dropZone">
         <input type="file" id="fileInput" aria-label="Choose a file to upload" />
         <i class="fa-solid fa-cloud-arrow-up"></i>
-        <p><strong>Tap to choose</strong> or drag a file here</p>
-        <p style="font-size:12px; margin-top:4px;">Max 11 GB</p>
+        <p><strong>Tap to choose</strong> or drag a file here.</p>
+        <p style="font-size:13px; margin-top:4px;">Maximum file size: 11 GB</p>
       </div>
 
       <div class="selected-file" id="selectedFile">
@@ -399,7 +406,7 @@
         <button class="remove" id="removeBtn" aria-label="Remove selected file"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <button class="btn-upload" id="uploadBtn" disabled>Send File</button>
+      <button class="btn-upload" id="uploadBtn" disabled>Upload file</button>
 
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
@@ -416,24 +423,24 @@
       <div class="card-like" style="background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px;">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;">
           <div>
-            <div style="font-size:16px; font-weight:700;">Received Files</div>
-            <div style="font-size:12px; color:var(--muted); margin-top:4px;">Files shared in this session will appear here.</div>
+            <div style="font-size:17px; font-weight:700;">Received files</div>
+            <div style="font-size:13px; color:var(--muted); margin-top:4px;">Files shared in this session will appear here.</div>
           </div>
-          <div style="font-size:12px; color:var(--muted);">Live</div>
+          <div style="font-size:13px; color:var(--muted);">Live</div>
         </div>
         <div id="mobileFilesList" class="files-list"></div>
-        <div id="mobileEmptyState" class="hint" style="margin-top:14px;">No files received yet.</div>
+        <div id="mobileEmptyState" class="hint" style="margin-top:14px;">No files have been received yet.</div>
       </div>
     </div>
 
-    <p class="hint">Send files from your phone, or switch to Receive to review session files.</p>
+    <div class="card-like" style="margin-top:16px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 14px 16px; text-align: center;">
+      <footer class="site-footer" style="margin:0; padding:0; border:0;">
+        <a href="/about.html">About</a> |
+        <a href="/privacy.html">Privacy</a> |
+        <a href="/contact.html">Contact</a>
+      </footer>
+    </div>
   </div>
-
-  <footer class="site-footer">
-    <a href="/about.html">About</a> |
-    <a href="/privacy.html">Privacy</a> |
-    <a href="/contact.html">Contact</a>
-  </footer>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -611,7 +618,7 @@
         if (xhr.status >= 200 && xhr.status < 300) {
           progressFill.style.width = "100%";
           progressLabel.textContent = "Done";
-          showResult("success", "File sent successfully");
+          showResult("success", "File uploaded successfully");
           uploadAttempts = 0;
           setTimeout(clearFile, 3000);
         } else {
@@ -628,7 +635,7 @@
           
           showResult("error", msg);
           uploadBtn.disabled = false;
-          uploadBtn.textContent = "Send File";
+          uploadBtn.textContent = "Upload file";
         }
       };
 
@@ -644,7 +651,7 @@
         
         showResult("error", "Network error — check your connection");
         uploadBtn.disabled = false;
-        uploadBtn.textContent = "Send File";
+        uploadBtn.textContent = "Upload file";
       };
       
       xhr.ontimeout = function () {
@@ -658,7 +665,7 @@
         
         showResult("error", "Upload timeout — connection is too slow. Try again with a better connection.");
         uploadBtn.disabled = false;
-        uploadBtn.textContent = "Send File";
+        uploadBtn.textContent = "Upload file";
       };
 
       console.log("Starting upload — File:", chosenFile.name, "Size:", chosenFile.size, "Type:", chosenFile.type);

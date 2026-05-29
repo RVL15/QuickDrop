@@ -33,23 +33,28 @@
       <div class="page-card-inner">
         <div class="page-hero">
           <span class="page-kicker"><i class="fa-solid fa-circle-info"></i> About the product</span>
-          <h1 class="page-title">A clean, browser-based way to move files between devices.</h1>
-          <p class="page-subtitle">QuickDrop uses a QR-linked session to keep the transfer flow simple: open the receiver on a laptop, scan from a phone, and send files directly through the browser with real-time updates.</p>
+          <h1 class="page-title">A browser-based file transfer tool for laptop and mobile.</h1>
+          <p class="page-subtitle">QuickDrop is built around one simple workflow: create a session on the laptop, scan the QR code from a phone, and transfer files in either direction with live browser updates.</p>
         </div>
 
-        <div class="content-grid two-col">
+        <div class="content-grid">
           <div class="section-card">
-            <h2>Why QuickDrop</h2>
+            <h2>Core idea</h2>
             <ul>
-              <li>Fast setup with no account or app installation required.</li>
-              <li>Real-time upload feedback and instant receiver updates.</li>
-              <li>Designed for ad-hoc sharing between phone and laptop.</li>
+              <li>Create a QR-based session from the laptop in a few seconds.</li>
+              <li>Send files from phone to laptop or from laptop to phone.</li>
+              <li>See shared files appear instantly without refreshing the page.</li>
             </ul>
           </div>
 
           <div class="section-card">
             <h2>How it works</h2>
-            <p>Each session gets a unique QR code and upload URL. The phone opens the upload page for that session, while the receiver listens for file events over Socket.IO and displays them immediately.</p>
+            <p>QuickDrop generates a unique session, creates a QR code and upload link, and uses Socket.IO to keep both devices in sync as soon as a file is uploaded.</p>
+          </div>
+
+          <div class="section-card">
+            <h2>Why people use it</h2>
+            <p>It is useful when you want a quick transfer without cables, Bluetooth pairing, or installing an app. It works well for documents, photos, videos, and everyday work files.</p>
           </div>
 
           <div class="section-card">
@@ -66,13 +71,13 @@
           </div>
 
           <div class="section-card">
-            <h2>Deployment note</h2>
-            <p>QuickDrop runs locally by default and can also be exposed with a tunnel service such as ngrok when you want phone access from outside the local network.</p>
+            <h2>Access and deployment</h2>
+            <p>QuickDrop runs locally by default and can be exposed with ngrok when the phone is on a different network. This makes the same session reachable outside localhost during testing or demos.</p>
           </div>
         </div>
 
         <div class="callout" style="margin-top:16px;">
-          Want a production-grade setup? Host QuickDrop behind HTTPS and use a stable public URL for the QR session generator.
+          For a production setup, host QuickDrop behind HTTPS and use a stable public URL for the QR session generator.
         </div>
 
         <footer class="site-footer">
