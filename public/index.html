@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/site.css">
   <style>
     :root {
       --bg: #0a0a0b;
@@ -303,6 +304,65 @@
       opacity: 0.4;
     }
 
+    .laptop-send {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .laptop-send h2 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .laptop-send p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .laptop-upload-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .laptop-file-input {
+      flex: 1 1 220px;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--fg);
+    }
+
+    .laptop-upload-btn {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #0a0a0b;
+      font-weight: 700;
+      cursor: pointer;
+      min-width: 140px;
+    }
+
+    .laptop-upload-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .laptop-selected {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      word-break: break-all;
+    }
+
     .toast {
       position: fixed;
       bottom: 24px;
@@ -365,7 +425,23 @@
       <i class="fa-regular fa-folder-open"></i>
       No files received yet
     </div>
+
+    <div class="laptop-send">
+      <h2>Send from this laptop</h2>
+      <p>Select a file here and upload it to the active session. The phone will receive it instantly.</p>
+      <div class="laptop-upload-row">
+        <input id="laptopFileInput" class="laptop-file-input" type="file" aria-label="Choose a file to send from laptop">
+        <button id="laptopSendBtn" class="laptop-upload-btn" type="button" disabled>Send to phone</button>
+      </div>
+      <div id="laptopSelected" class="laptop-selected">No file selected.</div>
+    </div>
   </div>
+
+  <footer class="site-footer">
+    <a href="/about.html">About</a> |
+    <a href="/privacy.html">Privacy</a> |
+    <a href="/contact.html">Contact</a>
+  </footer>
 
   <div id="toast" class="toast"></div>
 
@@ -373,6 +449,12 @@
   <script>
     let socket;
     let fileCount = 0;
+    let sessionId = null;
+    let laptopSelectedFile = null;
+
+    const laptopFileInput = document.getElementById("laptopFileInput");
+    const laptopSendBtn = document.getElementById("laptopSendBtn");
+    const laptopSelected = document.getElementById("laptopSelected");
 
     function setStatus(text, type) {
       const el = document.getElementById("status");
@@ -409,6 +491,57 @@
       return (bytes / (1024 * 1024)).toFixed(1) + " MB";
     }
 
+    function setLaptopSelectedText(text) {
+      laptopSelected.textContent = text;
+    }
+
+    function selectLaptopFile(file) {
+      laptopSelectedFile = file;
+      if (!file) {
+        laptopSendBtn.disabled = true;
+        laptopSendBtn.textContent = "Send to phone";
+        setLaptopSelectedText("No file selected.");
+        return;
+      }
+
+      laptopSendBtn.disabled = false;
+      laptopSendBtn.textContent = "Send to phone";
+      setLaptopSelectedText(file.name + " — " + formatSize(file.size));
+    }
+
+    function sendLaptopFile() {
+      if (!sessionId || !laptopSelectedFile) return;
+
+      const formData = new FormData();
+      formData.append("file", laptopSelectedFile);
+
+      laptopSendBtn.disabled = true;
+      laptopSendBtn.textContent = "Sending…";
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/upload/" + sessionId);
+
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          showToast("Sent: " + laptopSelectedFile.name);
+          selectLaptopFile(null);
+          laptopFileInput.value = "";
+        } else {
+          showToast("Upload failed: " + xhr.status);
+          laptopSendBtn.disabled = false;
+          laptopSendBtn.textContent = "Send to phone";
+        }
+      };
+
+      xhr.onerror = function () {
+        showToast("Network error while sending file");
+        laptopSendBtn.disabled = false;
+        laptopSendBtn.textContent = "Send to phone";
+      };
+
+      xhr.send(formData);
+    }
+
     function addFileCard(file) {
       fileCount++;
       document.getElementById("filesSection").style.display = "block";
@@ -437,6 +570,7 @@
         if (!res.ok) throw new Error("Server returned " + res.status);
 
         const data = await res.json();
+        sessionId = data.sessionId;
         document.getElementById("qr").src = data.qr;
         const sessionUrl = document.getElementById("sessionUrl");
         sessionUrl.textContent = "Phone link: " + data.url;
@@ -474,6 +608,12 @@
           addFileCard(file);
         });
 
+        laptopFileInput.addEventListener("change", function () {
+          selectLaptopFile(laptopFileInput.files && laptopFileInput.files[0] ? laptopFileInput.files[0] : null);
+        });
+
+        laptopSendBtn.addEventListener("click", sendLaptopFile);
+
       } catch (err) {
         setStatus("Failed to start session", "error");
         console.error("Init error:", err);
@@ -482,12 +622,6 @@
 
     init();
   </script>
-  
-    <footer style="margin-top:40px; text-align:center; padding:20px;">
-      <a href="/about.html">About</a> |
-      <a href="/privacy.html">Privacy</a> |
-      <a href="/contact.html">Contact</a>
-    </footer>
 
-  </body>
-  </html>
+</body>
+</html>

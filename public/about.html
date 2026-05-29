@@ -2,66 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About — QuickDrop</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    :root{--bg:#0a0a0b;--fg:#e8e8ec;--muted:#9aa0a6;--accent:#e8943a}
-    body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--fg);margin:0;min-height:100vh}
-    .container{max-width:900px;margin:48px auto;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:12px}
-    .header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    .logo-icon{width:44px;height:44px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#0a0a0b;font-weight:700}
-    h1{margin:0;font-size:22px}
-    p{color:var(--muted);line-height:1.6}
-    ul{color:var(--muted)}
-    .tech{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
-    .tech-item{background:rgba(255,255,255,0.02);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);font-size:13px;color:var(--muted)}
-    footer{margin-top:40px;text-align:center;padding:20px;color:var(--muted)}
-  </style>
+  <link rel="stylesheet" href="/site.css">
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
-      <div>
-        <h1>About QuickDrop</h1>
-        <div style="color:var(--muted);font-size:13px">Fast, secure, browser-based file transfer via QR</div>
+<body style="font-family:'Space Grotesk',sans-serif;">
+  <div class="page-shell narrow">
+    <div class="site-topbar">
+      <a class="site-brand" href="/">
+        <span class="site-brand-mark"><i class="fa-solid fa-bolt"></i></span>
+        <span class="site-brand-title">
+          <strong>QuickDrop</strong>
+          <span>Fast QR file transfer</span>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/upload.html">Send</a>
+        <a href="/about.html">About</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+
+    <section class="page-card">
+      <div class="page-card-inner">
+        <div class="page-hero">
+          <span class="page-kicker"><i class="fa-solid fa-circle-info"></i> About the product</span>
+          <h1 class="page-title">A clean, browser-based way to move files between devices.</h1>
+          <p class="page-subtitle">QuickDrop uses a QR-linked session to keep the transfer flow simple: open the receiver on a laptop, scan from a phone, and send files directly through the browser with real-time updates.</p>
+        </div>
+
+        <div class="content-grid two-col">
+          <div class="section-card">
+            <h2>Why QuickDrop</h2>
+            <ul>
+              <li>Fast setup with no account or app installation required.</li>
+              <li>Real-time upload feedback and instant receiver updates.</li>
+              <li>Designed for ad-hoc sharing between phone and laptop.</li>
+            </ul>
+          </div>
+
+          <div class="section-card">
+            <h2>How it works</h2>
+            <p>Each session gets a unique QR code and upload URL. The phone opens the upload page for that session, while the receiver listens for file events over Socket.IO and displays them immediately.</p>
+          </div>
+
+          <div class="section-card">
+            <h2>Core stack</h2>
+            <div class="tag-list">
+              <span class="tag">Node.js</span>
+              <span class="tag">Express</span>
+              <span class="tag">Socket.IO</span>
+              <span class="tag">Multer</span>
+              <span class="tag">QRCode</span>
+              <span class="tag">UUID</span>
+              <span class="tag">HTML / CSS / JavaScript</span>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <h2>Deployment note</h2>
+            <p>QuickDrop runs locally by default and can also be exposed with a tunnel service such as ngrok when you want phone access from outside the local network.</p>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top:16px;">
+          Want a production-grade setup? Host QuickDrop behind HTTPS and use a stable public URL for the QR session generator.
+        </div>
+
+        <footer class="site-footer">
+          <a href="/about.html">About</a> |
+          <a href="/privacy.html">Privacy</a> |
+          <a href="/contact.html">Contact</a>
+        </footer>
       </div>
-    </div>
-
-    <p>QuickDrop enables quick, ad-hoc file transfers between devices using a simple QR-code workflow — no account required, no plugins. The receiver generates a short-lived session and QR code; the sender scans the QR on their phone to upload files directly to the receiver.</p>
-
-    <h2 style="margin-top:18px">Why QuickDrop?</h2>
-    <ul>
-      <li>Simple: Open the receiver page, scan, and send — no sign-in or setup.</li>
-      <li>Real-time: Files appear instantly on the receiving device using Socket.IO.</li>
-      <li>Temporary sessions: Transfers are short-lived to reduce exposure.</li>
-    </ul>
-
-    <h2 style="margin-top:18px">Key Technologies</h2>
-    <div class="tech">
-      <div class="tech-item">Node.js</div>
-      <div class="tech-item">Express</div>
-      <div class="tech-item">Socket.IO</div>
-      <div class="tech-item">Multer</div>
-      <div class="tech-item">qrcode</div>
-      <div class="tech-item">UUID</div>
-      <div class="tech-item">HTML/CSS/JS</div>
-    </div>
-
-    <h2 style="margin-top:18px">Deployment & Access</h2>
-    <p>QuickDrop can be run locally or deployed behind a public tunnel (for example ngrok) when you need to receive files from mobile devices over the internet. For production use, host QuickDrop on a secure, trusted server and ensure HTTPS is enabled.</p>
-
-    <h2 style="margin-top:18px">Contact & Contributions</h2>
-    <p>Questions, bug reports, or contributions are welcome — see the <a href="/contact.html">Contact</a> page for details.</p>
-
-    <footer>
-      <a href="/about.html">About</a> |
-      <a href="/privacy.html">Privacy</a> |
-      <a href="/contact.html">Contact</a>
-    </footer>
+    </section>
   </div>
 </body>
 </html>

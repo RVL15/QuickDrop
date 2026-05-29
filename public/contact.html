@@ -2,61 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contact — QuickDrop</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    :root{--bg:#0a0a0b;--card:#0f1112;--fg:#e8e8ec;--muted:#9aa0a6;--accent:#e8943a}
-    body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--fg);margin:0;min-height:100vh}
-    .container{max-width:680px;margin:48px auto;padding:28px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:12px}
-    .header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    .logo-icon{width:44px;height:44px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#0a0a0b;font-weight:700}
-    h1{margin:0;font-size:22px}
-    p{color:var(--muted);line-height:1.6}
-    .contact-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
-    .card{background:var(--card);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-    input, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--fg)}
-    .btn{background:var(--accent);color:#0a0a0b;padding:10px 14px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
-    footer{margin-top:40px;text-align:center;padding:20px;color:var(--muted)}
-  </style>
+  <link rel="stylesheet" href="/site.css">
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
-      <div>
-        <h1>Contact QuickDrop</h1>
-        <div style="color:var(--muted);font-size:13px">Support, feedback, and business inquiries</div>
-      </div>
+<body style="font-family:'Space Grotesk',sans-serif;">
+  <div class="page-shell narrow">
+    <div class="site-topbar">
+      <a class="site-brand" href="/">
+        <span class="site-brand-mark"><i class="fa-solid fa-bolt"></i></span>
+        <span class="site-brand-title">
+          <strong>QuickDrop</strong>
+          <span>Fast QR file transfer</span>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/upload.html">Send</a>
+        <a href="/about.html">About</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
     </div>
 
-    <p>If you need assistance or would like to report an issue, please use the contact options below. For urgent matters, include "URGENT" in your message subject.</p>
+    <section class="page-card">
+      <div class="page-card-inner">
+        <div class="page-hero">
+          <span class="page-kicker"><i class="fa-solid fa-envelope"></i> Contact</span>
+          <h1 class="page-title">Support, feedback, and business inquiries.</h1>
+          <p class="page-subtitle">Reach out if you need help with a transfer session, want to report a bug, or are interested in using QuickDrop in another environment.</p>
+        </div>
 
-    <div class="contact-grid">
-      <div class="card">
-        <strong>Support email</strong>
-        <p style="margin:8px 0;"><a href="mailto:rishahvlokhande1@email.com">rishahvlokhande1@email.com</a></p>
-        <strong>Phone</strong>
-        <p style="margin:8px 0;">+91 81048 19297</p>
-        <strong>Response time</strong>
-        <p style="margin:8px 0;">We aim to respond to support requests within 48 business hours.</p>
+        <div class="content-grid two-col">
+          <div class="section-card">
+            <h2>Contact details</h2>
+            <div class="form-grid">
+              <div class="callout">
+                <strong>Email</strong><br>
+                <a href="mailto:rishahvlokhande1@email.com">rishahvlokhande1@email.com</a>
+              </div>
+              <div class="callout">
+                <strong>Phone</strong><br>
+                <span class="muted">+91 81048 19297</span>
+              </div>
+              <div class="callout">
+                <strong>Response target</strong><br>
+                <span class="muted">Within 48 business hours</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <h2>What to include</h2>
+            <ul>
+              <li>Your device type and browser.</li>
+              <li>The session URL or description of the issue.</li>
+              <li>A screenshot if the page looks broken or a file does not transfer.</li>
+            </ul>
+            <div class="callout" style="margin-top:16px;">
+              Need a faster response? Include <strong>URGENT</strong> in the subject line.
+            </div>
+          </div>
+        </div>
+
+        <footer class="site-footer">
+          <a href="/about.html">About</a> |
+          <a href="/privacy.html">Privacy</a> |
+          <a href="/contact.html">Contact</a>
+        </footer>
       </div>
-
-      <div class="card">
-        <strong>Contact options</strong>
-        <p style="margin:8px 0;color:var(--muted)">Please email us at <a href="mailto:rishahvlokhande1@email.com">rishahvlokhande1@email.com</a> or call +91 81048 19297 for support, feedback, or business inquiries.</p>
-        <p style="margin:8px 0;color:var(--muted)">If you require an automated contact form, we can add a server-side endpoint or integrate a third-party form provider on request.</p>
-      </div>
-    </div>
-
-    <footer>
-      <a href="/about.html">About</a> |
-      <a href="/privacy.html">Privacy</a> |
-      <a href="/contact.html">Contact</a>
-    </footer>
+    </section>
   </div>
 </body>
 </html>

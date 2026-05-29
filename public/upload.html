@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/site.css">
   <style>
     :root {
       --bg: #0a0a0b;
@@ -38,6 +39,42 @@
     .container {
       width: 100%;
       max-width: 400px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 4px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 14px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-weight: 700;
+      padding: 12px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #0a0a0b;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
     }
 
     .logo {
@@ -252,6 +289,78 @@
       margin-top: 20px;
     }
 
+    .session-note {
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(232,148,58,0.08);
+      border: 1px solid rgba(232,148,58,0.18);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .files-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .file-item .icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .file-item .info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-item .name {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-item .size {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .file-item .download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #0a0a0b;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; }
     }
@@ -264,39 +373,75 @@
       <span>QuickDrop</span>
     </div>
 
-    <div class="drop-zone" id="dropZone">
-      <input type="file" id="fileInput" aria-label="Choose a file to upload" />
-      <i class="fa-solid fa-cloud-arrow-up"></i>
-      <p><strong>Tap to choose</strong> or drag a file here</p>
-      <p style="font-size:12px; margin-top:4px;">Max 11 GB</p>
+    <div class="tabs" role="tablist" aria-label="Transfer modes">
+      <button class="tab-btn active" id="sendTabBtn" type="button">Send</button>
+      <button class="tab-btn" id="receiveTabBtn" type="button">Receive</button>
     </div>
 
-    <div class="selected-file" id="selectedFile">
-      <div class="icon"><i class="fa-regular fa-file"></i></div>
-      <div class="info">
-        <div class="name" id="fileName"></div>
-        <div class="size" id="fileSize"></div>
+    <div class="session-note">
+      This page can send files from your phone and show files shared in the current session.
+    </div>
+
+    <div class="panel active" id="sendPanel">
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" aria-label="Choose a file to upload" />
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <p><strong>Tap to choose</strong> or drag a file here</p>
+        <p style="font-size:12px; margin-top:4px;">Max 11 GB</p>
       </div>
-      <button class="remove" id="removeBtn" aria-label="Remove selected file"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="selected-file" id="selectedFile">
+        <div class="icon"><i class="fa-regular fa-file"></i></div>
+        <div class="info">
+          <div class="name" id="fileName"></div>
+          <div class="size" id="fileSize"></div>
+        </div>
+        <button class="remove" id="removeBtn" aria-label="Remove selected file"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <button class="btn-upload" id="uploadBtn" disabled>Send File</button>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel">Uploading…</div>
+      </div>
+
+      <div class="result" id="result">
+        <i id="resultIcon"></i>
+        <span id="resultText"></span>
+      </div>
     </div>
 
-    <button class="btn-upload" id="uploadBtn" disabled>Send File</button>
-
-    <div class="progress-wrap" id="progressWrap">
-      <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
-      <div class="progress-label" id="progressLabel">Uploading…</div>
+    <div class="panel" id="receivePanel">
+      <div class="card-like" style="background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;">
+          <div>
+            <div style="font-size:16px; font-weight:700;">Received Files</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:4px;">Files shared in this session will appear here.</div>
+          </div>
+          <div style="font-size:12px; color:var(--muted);">Live</div>
+        </div>
+        <div id="mobileFilesList" class="files-list"></div>
+        <div id="mobileEmptyState" class="hint" style="margin-top:14px;">No files received yet.</div>
+      </div>
     </div>
 
-    <div class="result" id="result">
-      <i id="resultIcon"></i>
-      <span id="resultText"></span>
-    </div>
-
-    <p class="hint">File goes directly to the receiving device</p>
+    <p class="hint">Send files from your phone, or switch to Receive to review session files.</p>
   </div>
 
+  <footer class="site-footer">
+    <a href="/about.html">About</a> |
+    <a href="/privacy.html">Privacy</a> |
+    <a href="/contact.html">Contact</a>
+  </footer>
+
+  <script src="/socket.io/socket.io.js"></script>
   <script>
     const sessionId = window.location.pathname.split("/").pop();
+    const sendTabBtn = document.getElementById("sendTabBtn");
+    const receiveTabBtn = document.getElementById("receiveTabBtn");
+    const sendPanel = document.getElementById("sendPanel");
+    const receivePanel = document.getElementById("receivePanel");
     const dropZone = document.getElementById("dropZone");
     const fileInput = document.getElementById("fileInput");
     const selectedFile = document.getElementById("selectedFile");
@@ -310,10 +455,14 @@
     const result = document.getElementById("result");
     const resultIcon = document.getElementById("resultIcon");
     const resultText = document.getElementById("resultText");
+    const mobileFilesList = document.getElementById("mobileFilesList");
+    const mobileEmptyState = document.getElementById("mobileEmptyState");
 
     let chosenFile = null;
     let uploadAttempts = 0;
     const MAX_RETRIES = 3;
+    let socket;
+    const seenFiles = new Set();
 
     function formatSize(bytes) {
       if (bytes < 1024) return bytes + " B";
@@ -359,6 +508,44 @@
       result.className = "result";
     }
 
+    function setActiveTab(tabName) {
+      const showSend = tabName === "send";
+      sendTabBtn.classList.toggle("active", showSend);
+      receiveTabBtn.classList.toggle("active", !showSend);
+      sendPanel.classList.toggle("active", showSend);
+      receivePanel.classList.toggle("active", !showSend);
+    }
+
+    function formatReceivedFile(file) {
+      const ext = file.originalName.split(".").pop().toLowerCase();
+      const iconMap = {
+        pdf: "fa-file-pdf", doc: "fa-file-word", docx: "fa-file-word",
+        xls: "fa-file-excel", xlsx: "fa-file-excel", csv: "fa-file-csv",
+        png: "fa-file-image", jpg: "fa-file-image", jpeg: "fa-file-image",
+        gif: "fa-file-image", webp: "fa-file-image", svg: "fa-file-image",
+        mp4: "fa-file-video", mov: "fa-file-video", avi: "fa-file-video",
+        mp3: "fa-file-audio", wav: "fa-file-audio", zip: "fa-file-zipper",
+        rar: "fa-file-zipper", "7z": "fa-file-zipper",
+        js: "fa-file-code", html: "fa-file-code", css: "fa-file-code",
+        py: "fa-file-code", json: "fa-file-code"
+      };
+      const iconClass = iconMap[ext] || "fa-file";
+      const item = document.createElement("div");
+      item.className = "file-item";
+      item.innerHTML =
+        '<div class="icon"><i class="fa-regular ' + iconClass + '"></i></div>' +
+        '<div class="info"><div class="name" title="' + file.originalName + '">' + file.originalName + '</div><div class="size">' + formatSize(file.size) + '</div></div>' +
+        '<a class="download" href="/uploads/' + file.filename + '" download="' + file.originalName + '" title="Download"><i class="fa-solid fa-arrow-down"></i></a>';
+      return item;
+    }
+
+    function addReceivedFile(file) {
+      if (!file || !file.filename || seenFiles.has(file.filename)) return;
+      seenFiles.add(file.filename);
+      mobileEmptyState.style.display = "none";
+      mobileFilesList.prepend(formatReceivedFile(file));
+    }
+
     /* Drag & drop events */
     dropZone.addEventListener("dragover", function (e) {
       e.preventDefault();
@@ -377,6 +564,14 @@
 
     fileInput.addEventListener("change", function () {
       if (fileInput.files.length) selectFile(fileInput.files[0]);
+    });
+
+    sendTabBtn.addEventListener("click", function () {
+      setActiveTab("send");
+    });
+
+    receiveTabBtn.addEventListener("click", function () {
+      setActiveTab("receive");
     });
 
     removeBtn.addEventListener("click", function (e) {
@@ -476,6 +671,18 @@
       uploadAttempts = 0;
       performUpload();
     });
+
+    socket = io(window.location.origin, { transports: ["websocket"] });
+
+    socket.on("connect", function () {
+      socket.emit("join-session", sessionId);
+    });
+
+    socket.on("file-received", function (file) {
+      addReceivedFile(file);
+    });
+
+    setActiveTab("send");
   </script>
 </body>
 </html>
