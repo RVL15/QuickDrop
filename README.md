@@ -85,6 +85,24 @@ quickdrop/
 
 ---
 
+# Screenshots
+
+## Desktop transfer interface
+
+![Desktop transfer interface 1](docs/screenshots/desktop-transfer-interface1.png)
+
+![Desktop transfer interface 2](docs/screenshots/desktop-transfer-interface2.png)
+
+## Mobile transfer interface
+
+![Mobile transfer interface](docs/screenshots/mobile-transfer-interface.png)
+
+## Received files
+
+![Received files](docs/screenshots/received-files.png)
+
+---
+
 # Installation
 
 Clone the repository:
